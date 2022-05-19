@@ -1,0 +1,1 @@
+This is a repository holding MySQL queries and their solutions. I have not be able to find a rich source of such things in my cursory glance into the usual places for such material. Thus, this repository will serve as a bank of exercises and their solutions.
