@@ -144,6 +144,20 @@ INNER JOIN (
     ) AS the_max 
 ON c.category_id = the_max.category_id;
 
-
+/*9) result set: film title, actor's names, category name; We retrieve
+the name, actor's names, and category for each film.
+----------code-----------------*/
+SELECT concat(a.first_name, " ", a.last_name) AS movie_actors, 
+    f.title AS movie_title, 
+    c.name AS movie_category 
+FROM actor AS a 
+INNER JOIN film_actor AS fa 
+ON a.actor_id = fa.actor_id 
+INNER JOIN film AS f 
+ON fa.film_id = f.film_id 
+INNER JOIN film_category AS fc 
+ON f.film_id = fc.film_id 
+INNER JOIN category AS c 
+ON fc.category_id = c.category_id; 
 
 
