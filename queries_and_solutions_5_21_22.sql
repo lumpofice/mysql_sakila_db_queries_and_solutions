@@ -160,4 +160,12 @@ ON f.film_id = fc.film_id
 INNER JOIN category AS c 
 ON fc.category_id = c.category_id; 
 
-
+/*10) result set: number of distinct last names from the actor table;
+We retrieve the number of distinct last names of actors from the 
+actor table.
+----------code-----------------*/
+SELECT count(a.last_name) 
+FROM (
+    SELECT DISTINCT last_name 
+    FROM actor
+    ) AS a;
