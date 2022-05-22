@@ -189,3 +189,13 @@ SELECT count(concat(first_name, " ",last_name)) AS name_count,
 FROM actor 
 GROUP BY concat(first_name, " ", last_name) 
 HAVING count(concat(first_name, " ", last_name)) < 2;
+
+/*12) result set: the last name of the actors whose last name 
+appears at most once within the last name column, and the count of 
+appearances for each of those last names;
+----------query code-----------------*/
+SELECT count(last_name), 
+    last_name 
+FROM actor 
+GROUP BY last_name 
+HAVING count(last_name) < 2;
