@@ -199,3 +199,14 @@ SELECT count(last_name),
 FROM actor 
 GROUP BY last_name 
 HAVING count(last_name) < 2;
+
+/*13) result set: the last name of the actors whose last name
+appears at least twice within the last name column, and the count of 
+appearance for each of those last names;
+----------query code-----------------*/
+SELECT count(last_name), 
+    last_name 
+FROM actor 
+GROUP BY last_name 
+HAVING count(last_name) > 1;
+
