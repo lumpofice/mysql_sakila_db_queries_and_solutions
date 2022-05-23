@@ -210,3 +210,39 @@ FROM actor
 GROUP BY last_name 
 HAVING count(last_name) > 1;
 
+/*14) result set: the maximum number of apearances for some last name
+among all of those last names appearing more than once, and that last
+name appearing the maximum number of times;
+OBSERVATION: When we are order the counts on the last name column, 
+we see the maximum count on the last name column is 5.
+----------observation code-----------------*/
+SELECT count(last_name) AS last_name_counts 
+FROM actor 
+GROUP BY last_name 
+ORDER BY count(last_name);
+/*----------query code-----------------*/
+SELECT max(appearances.the_max) AS max_appearances 
+FROM (
+    SELECT count(last_name) AS the_max 
+    FROM actor 
+    GROUP BY last_name
+    ) AS appearances;
+
+
+/*15) result set: max count of films per actor;
+OBSERVATION: When we are order the counts on the film_id column, 
+we see the maximum count on the film_id column is 42.
+----------observation code-----------------*/
+SELECT count(film_id) 
+FROM film_actor 
+GROUP BY actor_id 
+ORDER BY 1;
+/*----------query code-----------------*/
+SELECT max(roles.the_count) AS max_films_by_an_actor 
+FROM (
+    SELECT count(film_id) AS the_count 
+    FROM film_actor 
+    GROUP BY actor_id 
+    ORDER BY 1
+    ) AS roles;
+
