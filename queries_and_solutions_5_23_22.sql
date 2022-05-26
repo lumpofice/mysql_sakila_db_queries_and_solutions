@@ -8,10 +8,37 @@
 ------------------------------------------------------------------
 ----------------------------------------------------------------*/
 
-/*1) result set: customer_id, num_action_rentals, category = 'ACTION';
-We retrive the customer_id and the number rentals such that 'ACTION' is 
-the category type for each rental.
-------------query code------------------*/
+
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/*1) QUERY: For all customers, retrive the customer_id and the number of 
+rentals for that customer such that 'ACTION' is the category type for 
+the rental. Also, retrieve a third column listing the category type
+'ACTION' for each row produced by the above queries.
+
+BABY STEP 1: For each customer, retrieve the customer_id and the number
+of rentals for that customer.
+------------baby step 1 code------------------*/
+SELECT customer_id, 
+    count(rental_id) AS num_rentals 
+FROM rental 
+GROUP BY customer_id;
+/*BABY STEP 2: For each customer, retrieve the customer_id and the 
+number of rentals for that customer such that 'ACTION' is the category
+type for the rental.
+------------baby step 2 code------------------*/
+SELECT r.customer_id AS customer_id, 
+    count(r.rental_id) AS num_action_rentals 
+FROM rental AS r 
+INNER JOIN inventory AS i 
+ON r.inventory_id = i.inventory_id 
+INNER JOIN film_category AS fc 
+ON i.film_id = fc.film_id 
+INNER JOIN category AS ca 
+ON fc.category_id = ca.category_id 
+WHERE ca.name = 'ACTION' 
+GROUP BY r.customer_id;
+
+/*------------query code------------------*/
 SELECT r.customer_id AS customer_id, 
     count(r.rental_id) AS num_action_rentals, 
     ca.name AS cat_type 
@@ -24,6 +51,8 @@ INNER JOIN category AS ca
 ON fc.category_id = ca.category_id 
 WHERE ca.name = 'ACTION' 
 GROUP BY r.customer_id;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
 
 /*2) result set: film title, category name, number of films in each 
 category; 
