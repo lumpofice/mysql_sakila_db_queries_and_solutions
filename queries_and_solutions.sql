@@ -1,16 +1,17 @@
-/*----------------------------------------------------------------
-------------------------------------------------------------------
-------------------------------------------------------------------
-------------------------------------------------------------------
--------------------------------------SAKILA DATABASE--------------
---------------------------------------MySQL code------------------
-------------------------------------------------------------------
-------------------------------------------------------------------
-----------------------------------------------------------------*/
+/*----------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------SAKILA DATABASE---------------------------
+--------------------------------MySQL code------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+----------------------------------------------------------------------*/
 
 
-/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-/*1) QUERY: For all customers, retrive the customer_id and the number of 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1) QUERY: For all customers, retrive the customer_id and the number of 
 rentals for that customer such that 'ACTION' is the category type for 
 the rental. Also, retrieve a third column listing the category type
 'ACTION' for each row produced by the above queries.
@@ -22,6 +23,7 @@ SELECT customer_id,
     count(rental_id) AS num_rentals 
 FROM rental 
 GROUP BY customer_id;
+
 /*BABY STEP 2: For each customer, retrieve the customer_id and the 
 number of rentals for that customer such that 'ACTION' is the category
 type for the rental.
@@ -54,26 +56,55 @@ GROUP BY r.customer_id;
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
 
 
-/*2) result set: film title, category name, number of films in each 
-category; 
-We retrieve the title of each film, the category of that film, and 
-the number of films in each category. 
------------query code-----------------*/
-SELECT f.title, 
-    c.name, 
-    count.count_of_category 
+
+
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2) QUERY: For each film, retrieve the film title and category name
+to which that film corresponds. 
+Also, create a column such that, for each row containing category name 
+i, this additional column contains the number of films in category i; 
+
+BABY STEP 1: For each film, retrieve the film title and category name
+to which that film corresponds.
+------------baby step 1 code------------------*/
+SELECT f.title AS film_title, 
+    c.name AS cat_name 
+FROM film AS f 
+INNER JOIN film_category AS fc 
+ON f.film_id = fc.film_id 
+INNER JOIN category AS c 
+ON fc.category_id = c.category_id;
+
+/*BABY STEP 2: For each category name, retrieve the count of film 
+titles in that category and the category name.
+------------baby step 2 code------------------*/
+SELECT c.name AS cat_name, 
+    count(fc.category_id) AS num_films_in_cat 
+FROM film_category AS fc 
+INNER JOIN category AS c 
+ON fc.category_id = c.category_id 
+GROUP BY fc.category_id;
+
+/*-----------query code-----------------*/
+SELECT f.title AS film_title, 
+    c.name AS cat_name, 
+    count.count_of_category AS num_films_in_cat 
 FROM film AS f 
 INNER JOIN film_category AS fc 
 ON f.film_id = fc.film_id 
 INNER JOIN category AS c 
 ON fc.category_id = c.category_id 
 INNER JOIN (
-    SELECT count(*) AS count_of_category, 
+    SELECT count(category_id) AS count_of_category, 
         category_id 
     FROM film_category 
     GROUP BY category_id
     ) AS count 
 ON c.category_id = count.category_id;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*3) result set: avg_payment_amount, customer_first_name, 
 customer_last_name; 
