@@ -19,15 +19,3 @@ display(query1_babystep2)
 query1 = pd.read_csv('query1.csv')
 display(query1)
 # ---------------------------------------------------------------------COMPLETE
-
-
-# 2)---------------------------------------------------------------------------
-query2_babystep1 = pd.read_csv('query2_babystep1.csv')
-display(query2_babystep1)
-
-query2_babystep2 = pd.read_csv('query2_babystep2.csv')
-display(query2_babystep2)
-
-query2 = pd.read_csv('query2.csv')
-display(query2)
-# ---------------------------------------------------------------------COMPLETE
