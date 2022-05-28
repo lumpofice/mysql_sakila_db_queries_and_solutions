@@ -10,6 +10,8 @@
 ----------------------------------------------------------------------*/
 
 
+
+
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 1) QUERY: For all customers, retrive the customer_id and the number of 
 rentals for that customer such that 'ACTION' is the category type for 
@@ -106,18 +108,20 @@ ON c.category_id = count.category_id;
 
 
 
-/*3) result set: avg_payment_amount, customer_first_name, 
-customer_last_name; 
-We retrieve average payment for each customer, as well as each 
-customer's name.
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3) QUERY: For each customer, retrieve the average payment amount, 
+as well as their full name.  
 ------------query code----------------*/
-SELECT avg(p.amount) AS avg_payment_amount, 
-    c.first_name, 
-    c.last_name 
+SELECT concat(c.first_name, " ", c.last_name) AS customer_name, 
+    avg(p.amount) AS average_payment_amount 
 FROM customer AS c 
 INNER JOIN payment AS p 
 ON c.customer_id = p.customer_id 
-GROUP BY c.customer_id;
+GROUP BY p.customer_id;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*4) result set: payment amount, customer id, average payment per 
 customer; 
