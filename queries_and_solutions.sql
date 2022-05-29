@@ -123,25 +123,45 @@ GROUP BY p.customer_id;
 
 
 
-/*4) result set: payment amount, customer id, average payment per 
-customer; 
-We retrieve each amount paid by the customer,the customer's id, and 
-the average amount paid by this customer over the lifetime of their 
-active membership.
-----------query code-----------------*/
-SELECT p.amount, 
-    c.customer_id, 
-    averag.cust_averag 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4) QUERY: For each customer, we retrieve the amount paid at each
+transaction. We retrieve two additional columns, one containing the
+customer's id, the other containing the average amount paid by the 
+customer over the life of their account. In these two additional
+columns, the customer_id and the avgerage payment must correspond to
+every row containing a transaction from that customer.
+
+OBSERVATION: See Jupyter file query4.ipynb to see the note about 
+customer_id order and how to find a specific customer in the pandas
+DataFrame created with the python script. 
+
+BABY STEP 1: For each film, retrieve the film title and category name
+to which that film corresponds.
+------------baby step 1 code------------------*/
+SELECT p.amount AS amount_per_transaction, 
+    c.customer_id AS customer_id 
+FROM payment AS p 
+INNER JOIN customer AS c 
+ON p.customer_id = c.customer_id;
+
+/*-----------query code-----------------*/
+SELECT p.amount AS amount_per_transaction, 
+    c.customer_id AS customer_id, 
+    cust_avg_table.avg AS cust_avg_payment 
 FROM payment AS p 
 INNER JOIN customer AS c 
 ON p.customer_id = c.customer_id 
 INNER JOIN (
-    SELECT avg(amount) AS cust_averag, 
+    SELECT avg(amount) AS avg, 
         customer_id 
     FROM payment 
     GROUP BY customer_id
-    ) AS averag 
-ON c.customer_id = averag.customer_id;
+    ) AS cust_avg_table 
+ON p.customer_id = cust_avg_table.customer_id;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*5) result set: for each customer, a list of payment amounts such 
 that each payment amount is greater than average payment for the 
