@@ -135,8 +135,10 @@ OBSERVATION: See Jupyter file query4.ipynb to see the note about
 customer_id order and how to find a specific customer in the pandas
 DataFrame created with the python script. 
 
-BABY STEP 1: For each film, retrieve the film title and category name
-to which that film corresponds.
+BABY STEP 1: For each customer, retrieve the amount paid at each
+transaction. Also, retrieve an additional column containing the
+customer's id, such that the customer_id corresponds to every row
+containing a transaction from that customer.
 ------------baby step 1 code------------------*/
 SELECT p.amount AS amount_per_transaction, 
     c.customer_id AS customer_id 
@@ -163,28 +165,58 @@ ON p.customer_id = cust_avg_table.customer_id;
 
 
 
-/*5) result set: for each customer, a list of payment amounts such 
-that each payment amount is greater than average payment for the 
-customer, each customer's id, average payment of each customer; 
-We retrieve each amount paid by the customer, on condition that the 
-amount is greater than the customer's average, we retrieve the 
-customer's id, and we retrieve the average amount paid by the customer 
-over the lifetime of their active membership.
--------------query code--------------*/
-SELECT p.amount, 
-    c.customer_id, 
-    averag.cust_averag 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+5) QUERY: From each customer, we retrieve all payment amount rows
+that exceed their average payment. We retrieve two additional columns, 
+one containing the customer's id, the other containing the average 
+amount paid by the customer over the life of their account. 
+In these two additional columns, the customer_id and the avgerage 
+payment must correspond to every row containing a transaction from 
+that customer.
+
+OBSERVATION: See Jupyter file query5.ipynb to see the note about 
+customer_id order and how to find a specific customer in the pandas
+DataFrame created with the python script. 
+
+BABY STEP 1: For each customer, retrieve the amount paid at each
+transaction greater than that customer's average payment amount. 
+Also, retrieve an additional column containing the
+customer's id, such that the customer_id corresponds to every row
+containing a transaction from that customer.
+------------baby step 1 code------------------*/
+SELECT p.amount AS amount_above_avg, 
+    c.customer_id AS cust_id 
 FROM payment AS p 
 INNER JOIN customer AS c 
 ON p.customer_id = c.customer_id 
 INNER JOIN (
-    SELECT avg(amount) AS cust_averag, 
+    SELECT avg(amount) AS cust_avg, 
         customer_id 
     FROM payment 
     GROUP BY customer_id
-    ) AS averag 
-ON c.customer_id = averag.customer_id 
-WHERE p.amount > averag.cust_averag;
+    ) AS cust_amount 
+ON p.customer_id = cust_amount.customer_id 
+WHERE p.amount > cust_amount.cust_avg; 
+
+/*-----------query code-----------------*/
+SELECT p.amount AS amount_above_avg, 
+    c.customer_id AS cust_id, 
+    cust_amount.cust_avg AS avg_per_customer 
+FROM payment AS p 
+INNER JOIN customer AS c 
+ON p.customer_id = c.customer_id 
+INNER JOIN (
+    SELECT avg(amount) AS cust_avg, 
+        customer_id 
+    FROM payment 
+    GROUP BY customer_id
+    ) AS cust_amount 
+ON p.customer_id = cust_amount.customer_id 
+WHERE p.amount > cust_amount.cust_avg;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*6) result set: payment amount, payment classificaton (high vs. low); 
 We retrieve the amount for each payment, and we retrieve a column that 
