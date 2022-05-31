@@ -218,17 +218,43 @@ WHERE p.amount > cust_amount.cust_avg;
 
 
 
-/*6) result set: payment amount, payment classificaton (high vs. low); 
-We retrieve the amount for each payment, and we retrieve a column that 
-classifies each payment as 'high' or 'low', depending on the 
-condition(s) we set on the payment attribute.
------------query code----------------*/
-SELECT p.amount AS payment_amount, 
-    CASE WHEN p.amount > 6.00 
-        THEN 'high' 
-        ELSE 'low' 
-        END AS transaction_type 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+6) QUERY: For each customer, we retrieve all transaction amounts in one
+column, transaction classification (low vs. high) in a second column,
+and the customer id corresponding to each transaction in a third 
+column. 
+
+OBSERVATION: See Jupyter file query6.ipynb to see the note about 
+customer_id order and how to find a specific customer in the pandas
+DataFrame created with the python script. 
+
+BABY STEP 1: For each customer, we retrieve all transaction amounts 
+in one column and transaction classification (low vs. high) in a 
+second column.
+------------baby step 1 code------------------*/
+SELECT p.amount AS transaction_amount, 
+    CASE 
+        WHEN p.amount > 8.00 
+        THEN "high" 
+        ELSE "low" 
+        END AS pay_class 
 FROM payment AS p;
+
+/*-----------query code-----------------*/
+SELECT c.customer_id AS cust_id, 
+    p.amount AS transaction_amount, 
+    CASE 
+        WHEN p.amount > 8.00 
+        THEN "high" 
+        ELSE "low" 
+        END AS pay_class 
+FROM payment AS p 
+INNER JOIN customer AS c 
+ON p.customer_id = c.customer_id;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*7) result set: the number of films under the category containing the 
 maximum; 
