@@ -256,18 +256,43 @@ ON p.customer_id = c.customer_id;
 
 
 
-/*7) result set: the number of films under the category containing the 
-maximum; 
-We retrieve the number of films contained within the category holding 
-the maximum among all categories.
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+7) QUERY: We retrieve the number of films contained within the category, 
+among all categories, holding the maximum number of films. 
+Additionally, we retrieve a column listing that category name, such 
+that the category name appears along the same row containing that 
+category's number of films.
+ 
+BABY STEP 1: We retrieve the number of films contained within each 
+category. Additionally, we retrieve a column listing that category name, 
+such that the category name appears along the same row containing that 
+category's number of films.
+------------baby step 1 code------------------*/
+SELECT count(fc.category_id) AS cat_count, 
+    cat.name AS cat_name
+FROM film_category AS fc 
+INNER JOIN category AS cat 
+ON fc.category_id = cat.category_id 
+GROUP BY fc.category_id;
+
+/* OBSERVATION: Rendering the csv file for the query was tricky. With 
+LIMIT 0, 1, the INTO OUTFILE csv returned only the column names from
+the statement antecedant to the UNION ALL clause. With LIMIT 0, 2, the
+INTO OUTFILE csv returned the column names and the desired output 
+row, both of which will render in the terminal with LIMIT 0, 1.
 ----------query code-----------------*/
-SELECT max(the_max.cat_count) AS max_num_films_by_category 
-FROM (
-    SELECT count(category_id) AS cat_count, 
-        category_id 
-    FROM film_category 
-    GROUP BY category_id
-    ) AS the_max;
+SELECT count(fc.category_id) AS cat_count, 
+    cat.name AS cat_name 
+FROM film_category AS fc 
+INNER JOIN category AS cat 
+ON fc.category_id = cat.category_id 
+GROUP BY fc.category_id 
+ORDER BY 1 DESC 
+LIMIT 0, 1;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*8) result set: the number of films under the category containing the 
 maximum, 
