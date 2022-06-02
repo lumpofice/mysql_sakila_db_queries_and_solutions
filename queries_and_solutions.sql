@@ -294,29 +294,13 @@ LIMIT 0, 1;
 
 
 
-/*8) result set: the number of films under the category containing the 
-maximum, 
-as well as the name of the category containing the maximum; We retrieve 
-the number of films contained within the category holding the maximum 
-among all categories, and we retrieve the name of that category.
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+8) QUERY: We retrieve the title, full name of the actors, and 
+the category name for each film.
 ----------query code-----------------*/
-SELECT max(the_max.cat_count) AS num_films, 
-    c.name AS category_with_greatest_num_films 
-FROM category AS c 
-INNER JOIN (
-    SELECT count(category_id) AS cat_count, 
-        category_id 
-    FROM film_category 
-    GROUP BY category_id
-    ) AS the_max 
-ON c.category_id = the_max.category_id;
-
-/*9) result set: film title, actor's names, category name; We retrieve
-the name, actor's names, and category for each film.
-----------query code-----------------*/
-SELECT concat(a.first_name, " ", a.last_name) AS movie_actors, 
-    f.title AS movie_title, 
-    c.name AS movie_category 
+SELECT f.title AS film_title, 
+    concat(a.first_name, " ", a.last_name) AS actor_name, 
+    c.name AS cat_name 
 FROM actor AS a 
 INNER JOIN film_actor AS fa 
 ON a.actor_id = fa.actor_id 
@@ -326,6 +310,30 @@ INNER JOIN film_category AS fc
 ON f.film_id = fc.film_id 
 INNER JOIN category AS c 
 ON fc.category_id = c.category_id; 
+
+/* OBSERVATION: Above we found a single path from one table to the next, 
+leading us from one variable to one variable. Below, we will find 
+two paths from the film_actor table, leading us to two different 
+variables, film_id in the film table and film_id in the 
+film_category table.
+
+----------alternative query code-----------------*/
+SELECT f.title AS film_title, 
+    concat(a.first_name, " ", a.last_name) AS actor_name, 
+    cat.name AS cat_name 
+FROM film AS f 
+INNER JOIN film_actor AS fa 
+ON f.film_id = fa.film_id 
+INNER JOIN actor AS a 
+ON fa.actor_id = a.actor_id 
+INNER JOIN film_category AS fc 
+ON fa.film_id = fc.film_id 
+INNER JOIN category AS cat 
+ON fc.category_id = cat.category_id; 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*10) result set: number of distinct last names from the actor table;
 We retrieve the number of distinct last names of actors from the 
