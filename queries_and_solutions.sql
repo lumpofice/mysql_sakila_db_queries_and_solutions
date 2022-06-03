@@ -280,6 +280,7 @@ LIMIT 0, 1, the INTO OUTFILE csv returned only the column names from
 the statement antecedant to the UNION ALL clause. With LIMIT 0, 2, the
 INTO OUTFILE csv returned the column names and the desired output 
 row, both of which will render in the terminal with LIMIT 0, 1.
+
 ----------query code-----------------*/
 SELECT count(fc.category_id) AS cat_count, 
     cat.name AS cat_name 
@@ -331,6 +332,35 @@ ON fa.film_id = fc.film_id
 INNER JOIN category AS cat 
 ON fc.category_id = cat.category_id; 
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
+
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+9) QUERY: Retrieve all the film titles that are in the title column
+of the film table but not in the title column of the film_list table.
+----------query code-----------------*/
+SELECT f.title AS missing_titles 
+FROM film AS f 
+WHERE f.title NOT IN (
+    SELECT fl.title 
+    FROM film_list AS fl
+    );
+    
+/* OBSERVATION: We can further support our above query by showing 
+none of the three listed films from the above query belong to the set of 
+results from a query in search of, within the title column of the 
+film_list table, titles within a set consisting of those three film 
+titles and a fourth, different from the other three, film title.
+
+----------supporting query code-----------------*/
+SELECT title AS retrieved_titles 
+FROM film_list 
+WHERE title 
+    REGEXP 'DRUMLINE CYCLONE|FLIGHT LIES|SLACKER LIAISONS|NUTS TIES';
+
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
 
 
 
