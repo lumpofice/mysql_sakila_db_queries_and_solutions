@@ -377,6 +377,56 @@ FROM (
 
 
 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+11) QUERY: We retrieve the categories for those three movies that
+exist within the title column of the film table and not in the title
+column of the film_list table. However, we must not assume that we 
+have the names of these films prior to our query.
+----------query code-----------------*/
+SELECT f.title AS movie_title, 
+    cat.name AS movie_category 
+FROM film AS f 
+INNER JOIN film_category AS fc 
+ON f.film_id = fc.film_id 
+INNER JOIN category AS cat 
+ON fc.category_id = cat.category_id 
+WHERE f.title NOT IN (
+    SELECT title 
+    FROM film_list);
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
+
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12) QUERY: Use two different approaches to find the total number of 
+films in the union of all films from both the 'Documentary' and 
+'Horror' categories.
+----------query code 1-----------------*/
+SELECT count(title) + (
+    SELECT count(title) 
+    FROM film_list 
+    WHERE category = 'Documentary'
+    ) AS total_num_films_in_horror_and_documentary 
+FROM film_list 
+WHERE category = 'Horror';
+
+/*----------query code 2-----------------*/
+SELECT count(title) + (
+    SELECT count(f.title) 
+    FROM film AS f 
+    INNER JOIN film_category AS fc 
+    ON f.film_id = fc.film_id 
+    INNER JOIN category AS cat 
+    ON fc.category_id = cat.category_id 
+    WHERE cat.name = 'Documentary'
+    ) AS total_num_films_in_horror_and_documentary 
+FROM film_list 
+WHERE category = 'Horror';
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
 
 /*11) result set: all non-repeated names of actors. meaning, the
 actor's name appears no more than once in the concatenated column; 
