@@ -358,22 +358,25 @@ SELECT title AS retrieved_titles
 FROM film_list 
 WHERE title 
     REGEXP 'DRUMLINE CYCLONE|FLIGHT LIES|SLACKER LIAISONS|NUTS TIES';
-
 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
 
 
 
 
-
-/*10) result set: number of distinct last names from the actor table;
-We retrieve the number of distinct last names of actors from the 
-actor table.
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10) QUERY: We retrieve the number of distinct last names of actors 
+from the actor table.
 ----------query code-----------------*/
-SELECT count(a.last_name) 
+SELECT count(last_names.distincts) AS distinct_last_names 
 FROM (
-    SELECT DISTINCT last_name 
+    SELECT DISTINCT last_name AS distincts 
     FROM actor
-    ) AS a;
+    ) AS last_names;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
+
 
 /*11) result set: all non-repeated names of actors. meaning, the
 actor's name appears no more than once in the concatenated column; 
