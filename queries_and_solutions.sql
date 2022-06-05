@@ -428,25 +428,34 @@ WHERE category = 'Horror';
 
 
 
-/*11) result set: all non-repeated names of actors. meaning, the
-actor's name appears no more than once in the concatenated column; 
-We retrieve the first and last name of each actor whose name appears
-no more than once in the concatenated column, and we retrieve the 
-number of times the first and last name appear together within the 
-concatenated column. 
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13) QUERY: We retrieve the first and last name of each actor whose name 
+appears no more than once in the concatenated column. Additionally, we 
+retrieve a column displaying in each row the number of times the first 
+and last name appear together within the concatenated column. 
+
 OBSERVATION: SUSAN DAVIS' name appears more than once
 ----------observation code-----------------*/
-SELECT count(concat(first_name, " ",last_name)) AS name_count, 
-    concat(first_name, " ", last_name) AS name 
+SELECT concat(first_name, " ", last_name) AS actor_name, 
+    count(concat(first_name, " ", last_name)) 
+        AS num_appearances_of_actor_name 
 FROM actor 
 GROUP BY concat(first_name, " ", last_name) 
-HAVING count(concat(first_name, " ", last_name)) > 0;
+HAVING count(concat(first_name, " ", last_name)) >= 2;
+
 /*----------query code-----------------*/
-SELECT count(concat(first_name, " ",last_name)) AS name_count, 
-    concat(first_name, " ", last_name) AS name 
+SELECT concat(first_name, " ", last_name) AS actor_name, 
+    count(concat(first_name, " ", last_name)) 
+        AS num_appearances_of_actor_name 
 FROM actor 
 GROUP BY concat(first_name, " ", last_name) 
 HAVING count(concat(first_name, " ", last_name)) < 2;
+/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE*/
+
+
+
+
+
 
 /*12) result set: the last name of the actors whose last name 
 appears at most once within the last name column, and the count of 
