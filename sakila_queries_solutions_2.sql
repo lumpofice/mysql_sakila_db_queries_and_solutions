@@ -228,3 +228,4 @@ GROUP BY
 category
 ORDER BY
 the_sum DESC;
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE
