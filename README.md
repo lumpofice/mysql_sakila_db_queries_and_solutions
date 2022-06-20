@@ -6,8 +6,8 @@
 
  - Finally, there is a python script used to display table form solutions to these queries, baby steps, observations, alternatives, etc.  
 
-<b>sakila_queries_solutions_1.sql<\b>
+<b>sakila_queries_solutions_1.sql</b>
  - Has queries for the sakila database
 
-<b>sakila_queries_solutions_2.sql<\b>
+<b>sakila_queries_solutions_2.sql</b>
  - Has somewhat more involved queries for the sakila database
