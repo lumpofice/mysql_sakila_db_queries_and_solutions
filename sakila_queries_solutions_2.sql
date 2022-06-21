@@ -229,3 +229,27 @@ category
 ORDER BY
 the_sum DESC;
 --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE
+
+
+
+
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--2) QUERY: Breakdown of the average rental amount, per customer, on
+--a monthly basis
+SELECT 
+concat(c.first_name, " ", c.last_name) AS customer_name,
+p.customer_id AS customer_id,
+SUM(p.amount)/COUNT(DISTINCT p.payment_id) AS average_rental_amount,
+MIN(DATE(p.payment_date)) AS first_rental_of_month
+FROM 
+customer AS c
+LEFT JOIN
+payment AS p
+ON
+c.customer_id = p.customer_id
+GROUP BY
+customer_id,
+MONTH(payment_date)
+ORDER BY
+customer_id,
+first_rental_of_month;
