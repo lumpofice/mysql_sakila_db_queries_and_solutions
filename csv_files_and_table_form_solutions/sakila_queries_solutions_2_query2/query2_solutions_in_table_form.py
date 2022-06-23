@@ -10,6 +10,12 @@ logging.debug('Start of program')
 # form
 
 # 2)---------------------------------------------------------------------------
+i_k = pd.read_csv('i_k.csv')
+display(i_k)
+
+i_kk = pd.read_csv('i_kk.csv')
+display(i_kk)
+
 query2 = pd.read_csv('query2.csv')
 display(query2)
 # ---------------------------------------------------------------------COMPLETE
