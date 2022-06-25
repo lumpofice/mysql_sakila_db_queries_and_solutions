@@ -234,6 +234,9 @@ the_sum DESC;
 
 
 --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--2) QUERY: Breakdown of the average rental amount, per customer, on
+--a monthly basis
+
 --i) We must check to make sure the customer table and the 
 --payment table contain an identical set of customer ids 
 --We require two tables for this: k) and kk)
@@ -268,8 +271,6 @@ customer AS c
 --both queries returned the empty set, which allows us to use
 --INNER JOIN between these two tables on this customer_id column
 
---2) QUERY: Breakdown of the average rental amount, per customer, on
---a monthly basis
 --------------2) query code------------------
 SELECT 
 concat(c.first_name, " ", c.last_name) AS customer_name,
@@ -288,3 +289,4 @@ MONTH(payment_date)
 ORDER BY
 customer_id,
 first_rental_of_month;
+--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^COMPLETE
