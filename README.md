@@ -22,3 +22,4 @@
 <b>sakila_queries_solutions_2.sql</b>
  - 1. QUERY: We find rental payment amount totals for each category
  - 2. QUERY: Breakdown of the average rental amount, per customer, on a monthly basis
+ - 3. QUERY: Pull all film titles priced between 2 and 4 dollars, belonging to the documentary or horror categories, and having an actor named Bob
